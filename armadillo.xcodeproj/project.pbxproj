@@ -14,6 +14,8 @@
 		CE10FA9B2212917B007806E4 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CE10FA992212917B007806E4 /* LaunchScreen.storyboard */; };
 		CE468C282212EA54007CFF2A /* GroupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE468C272212EA54007CFF2A /* GroupViewController.swift */; };
 		CE468C2A2212EA6F007CFF2A /* AlarmViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE468C292212EA6F007CFF2A /* AlarmViewController.swift */; };
+		CE468C2C2212F1E4007CFF2A /* Group.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE468C2B2212F1E4007CFF2A /* Group.swift */; };
+		CE468C2E2212F1F6007CFF2A /* Alarm.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE468C2D2212F1F6007CFF2A /* Alarm.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -26,6 +28,8 @@
 		CE10FA9C2212917B007806E4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		CE468C272212EA54007CFF2A /* GroupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupViewController.swift; sourceTree = "<group>"; };
 		CE468C292212EA6F007CFF2A /* AlarmViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlarmViewController.swift; sourceTree = "<group>"; };
+		CE468C2B2212F1E4007CFF2A /* Group.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Group.swift; sourceTree = "<group>"; };
+		CE468C2D2212F1F6007CFF2A /* Alarm.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Alarm.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -62,12 +66,22 @@
 				CE10FA922212916E007806E4 /* ViewController.swift */,
 				CE468C272212EA54007CFF2A /* GroupViewController.swift */,
 				CE468C292212EA6F007CFF2A /* AlarmViewController.swift */,
+				CE468C2F2212FA89007CFF2A /* Model */,
 				CE10FA942212916E007806E4 /* Main.storyboard */,
 				CE10FA972212917B007806E4 /* Assets.xcassets */,
 				CE10FA992212917B007806E4 /* LaunchScreen.storyboard */,
 				CE10FA9C2212917B007806E4 /* Info.plist */,
 			);
 			path = armadillo;
+			sourceTree = "<group>";
+		};
+		CE468C2F2212FA89007CFF2A /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				CE468C2B2212F1E4007CFF2A /* Group.swift */,
+				CE468C2D2212F1F6007CFF2A /* Alarm.swift */,
+			);
+			path = Model;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -144,7 +158,9 @@
 				CE468C2A2212EA6F007CFF2A /* AlarmViewController.swift in Sources */,
 				CE468C282212EA54007CFF2A /* GroupViewController.swift in Sources */,
 				CE10FA932212916E007806E4 /* ViewController.swift in Sources */,
+				CE468C2C2212F1E4007CFF2A /* Group.swift in Sources */,
 				CE10FA912212916E007806E4 /* AppDelegate.swift in Sources */,
+				CE468C2E2212F1F6007CFF2A /* Alarm.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -1,22 +1,17 @@
 import UIKit
 
-class AlarmViewController: UITableViewController {
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
+class AlarmViewController: UITableViewController, UITextViewDelegate {
+    var alarm: Alarm!
+    
+    @IBOutlet weak var name: UITextField!
+    @IBOutlet weak var caption: UITextField!
+    @IBOutlet weak var datePicker: UIDatePicker!
+    @IBOutlet weak var imageView: UIImageView!
+    @IBOutlet weak var tapToSelectImage: UILabel!
+    
+    @IBAction func datePickerChanged(_ sender: UIDatePicker) {
     }
     
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+    @IBAction func imageViewTapped(_ sender: UITapGestureRecognizer) {
     }
-    */
-
 }

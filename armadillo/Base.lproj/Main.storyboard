@@ -78,6 +78,9 @@
                                             <nil key="textColor"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                             <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                            <connections>
+                                                <outlet property="delegate" destination="fsC-Ta-DV6" id="D6p-9P-4LO"/>
+                                            </connections>
                                         </textField>
                                     </subviews>
                                     <constraints>
@@ -102,6 +105,9 @@
                                         </label>
                                         <switch opaque="NO" tag="2" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="cpE-P3-lwN">
                                             <rect key="frame" x="310" y="6.5" width="51" height="31"/>
+                                            <connections>
+                                                <action selector="switchChanged:" destination="fsC-Ta-DV6" eventType="valueChanged" id="3qQ-xe-isJ"/>
+                                            </connections>
                                         </switch>
                                     </subviews>
                                     <constraints>
@@ -173,6 +179,9 @@
                                                     <nil key="textColor"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <textInputTraits key="textInputTraits" autocapitalizationType="sentences" returnKeyType="done"/>
+                                                    <connections>
+                                                        <outlet property="delegate" destination="s1l-dI-OiC" id="mLj-78-AKa"/>
+                                                    </connections>
                                                 </textField>
                                             </subviews>
                                             <constraints>
@@ -194,6 +203,9 @@
                                                     <nil key="textColor"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="18"/>
                                                     <textInputTraits key="textInputTraits"/>
+                                                    <connections>
+                                                        <outlet property="delegate" destination="s1l-dI-OiC" id="hkr-Th-ITT"/>
+                                                    </connections>
                                                 </textField>
                                             </subviews>
                                             <constraints>
@@ -223,6 +235,9 @@
                                                             <date key="date" timeIntervalSinceReferenceDate="571664431.64207399">
                                                                 <!--2019-02-12 11:40:31 +0000-->
                                                             </date>
+                                                            <connections>
+                                                                <action selector="datePickerChanged:" destination="s1l-dI-OiC" eventType="valueChanged" id="4cB-k4-VcG"/>
+                                                            </connections>
                                                         </datePicker>
                                                     </subviews>
                                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -279,9 +294,20 @@
                             <outlet property="delegate" destination="s1l-dI-OiC" id="oyU-ba-pWQ"/>
                         </connections>
                     </tableView>
+                    <connections>
+                        <outlet property="caption" destination="Pi4-is-nX0" id="kPP-ac-A2S"/>
+                        <outlet property="datePicker" destination="Du2-71-8Fg" id="sai-4a-hDD"/>
+                        <outlet property="imageView" destination="1u5-OU-I3U" id="xJE-L4-WWJ"/>
+                        <outlet property="name" destination="9Tr-Z2-XbV" id="szc-UN-AgN"/>
+                        <outlet property="tapToSelectImage" destination="bT2-yd-lWN" id="C95-BP-7Gs"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="3iY-WQ-Pbg" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <tapGestureRecognizer id="Uwk-sx-AP0"/>
+                <tapGestureRecognizer id="Uwk-sx-AP0">
+                    <connections>
+                        <action selector="imageViewTapped:" destination="s1l-dI-OiC" id="jwq-FY-tsu"/>
+                    </connections>
+                </tapGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="2544.8000000000002" y="-25.637181409295355"/>
         </scene>
