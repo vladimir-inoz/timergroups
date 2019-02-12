@@ -1,14 +1,6 @@
-//
-//  ViewController.swift
-//  armadillo
-//
-//  Created by User on 12/02/2019.
-//  Copyright © 2019 test. All rights reserved.
-//
-
 import UIKit
 
-class ViewController: UIViewController {
+class ViewController: UITableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
