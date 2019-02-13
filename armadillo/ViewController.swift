@@ -1,5 +1,6 @@
 import UIKit
 
+/// This View Controller indicates list of all alarm groups
 class ViewController: UITableViewController {
     var groups = [Group]()
     

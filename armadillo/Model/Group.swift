@@ -4,6 +4,7 @@ class Group: NSObject {
     var name: String
     var playSound: Bool
     var enabled: Bool
+    /// Array of nested alarms in group
     var alarms: [Alarm]
     
     init(name: String, playSound: Bool, enabled: Bool, alarms: [Alarm]) {
