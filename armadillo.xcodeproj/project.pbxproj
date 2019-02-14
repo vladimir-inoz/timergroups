@@ -16,6 +16,7 @@
 		CE468C2A2212EA6F007CFF2A /* AlarmViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE468C292212EA6F007CFF2A /* AlarmViewController.swift */; };
 		CE468C2C2212F1E4007CFF2A /* Group.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE468C2B2212F1E4007CFF2A /* Group.swift */; };
 		CE468C2E2212F1F6007CFF2A /* Alarm.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE468C2D2212F1F6007CFF2A /* Alarm.swift */; };
+		CE6C7C382214471000DA9779 /* Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE6C7C372214471000DA9779 /* Helper.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -30,6 +31,7 @@
 		CE468C292212EA6F007CFF2A /* AlarmViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlarmViewController.swift; sourceTree = "<group>"; };
 		CE468C2B2212F1E4007CFF2A /* Group.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Group.swift; sourceTree = "<group>"; };
 		CE468C2D2212F1F6007CFF2A /* Alarm.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Alarm.swift; sourceTree = "<group>"; };
+		CE6C7C372214471000DA9779 /* Helper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Helper.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -62,6 +64,7 @@
 		CE10FA8F2212916E007806E4 /* armadillo */ = {
 			isa = PBXGroup;
 			children = (
+				CE6C7C372214471000DA9779 /* Helper.swift */,
 				CE10FA902212916E007806E4 /* AppDelegate.swift */,
 				CE10FA922212916E007806E4 /* ViewController.swift */,
 				CE468C272212EA54007CFF2A /* GroupViewController.swift */,
@@ -156,6 +159,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				CE468C2A2212EA6F007CFF2A /* AlarmViewController.swift in Sources */,
+				CE6C7C382214471000DA9779 /* Helper.swift in Sources */,
 				CE468C282212EA54007CFF2A /* GroupViewController.swift in Sources */,
 				CE10FA932212916E007806E4 /* ViewController.swift in Sources */,
 				CE468C2C2212F1E4007CFF2A /* Group.swift in Sources */,
@@ -308,6 +312,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				INFOPLIST_FILE = armadillo/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -325,6 +330,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				INFOPLIST_FILE = armadillo/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
