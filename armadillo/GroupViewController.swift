@@ -24,6 +24,7 @@ class GroupViewController: UITableViewController, UITextFieldDelegate {
         } else if sender.tag == enabledTag {
             group.enabled = sender.isOn
         }
+        save()
     }
     
     //MARK: - Table view datasource
@@ -114,6 +115,7 @@ class GroupViewController: UITableViewController, UITextFieldDelegate {
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         group.alarms.remove(at: indexPath.row)
         tableView.deleteRows(at: [indexPath], with: .automatic)
+        save()
     }
     
     override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
@@ -126,6 +128,7 @@ class GroupViewController: UITableViewController, UITextFieldDelegate {
     func textFieldDidEndEditing(_ textField: UITextField) {
         group.name = textField.text!
         title = group.name
+        save()
     }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
@@ -137,6 +140,7 @@ class GroupViewController: UITableViewController, UITextFieldDelegate {
         let newAlarm = Alarm(name: "Name this alarm", caption: "Add an optional description", time: Date(), image: "")
         group.alarms.append(newAlarm)
         performSegue(withIdentifier: "EditAlarm", sender: newAlarm)
+        save()
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -152,5 +156,9 @@ class GroupViewController: UITableViewController, UITextFieldDelegate {
         if let alarmViewController = segue.destination as? AlarmViewController {
             alarmViewController.alarm = alarmToEdit
         }
+    }
+    
+    @objc func save() {
+        NotificationCenter.default.post(name: Notification.Name("save"), object: nil)
     }
 }

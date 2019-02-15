@@ -27,6 +27,7 @@ class AlarmViewController: UITableViewController, UITextFieldDelegate, UIImagePi
     
     @IBAction func datePickerChanged(_ sender: UIDatePicker) {
         alarm.time = datePicker.date
+        save()
     }
     
     @IBAction func imageViewTapped(_ sender: UITapGestureRecognizer) {
@@ -42,6 +43,7 @@ class AlarmViewController: UITableViewController, UITextFieldDelegate, UIImagePi
         alarm.name = name.text!
         alarm.caption = caption.text!
         title = alarm.name
+        save()
     }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
@@ -80,6 +82,7 @@ class AlarmViewController: UITableViewController, UITextFieldDelegate, UIImagePi
             
             let jpeg = image.jpegData(compressionQuality: 0.8)
             try jpeg?.write(to: newPath)
+            save()
         } catch {
             print("Failed to save new image")
         }
@@ -87,5 +90,9 @@ class AlarmViewController: UITableViewController, UITextFieldDelegate, UIImagePi
         //update UI
         imageView.image = image
         tapToSelectImage.isHidden = true
+    }
+    
+    @objc func save() {
+        NotificationCenter.default.post(name: Notification.Name("save"), object: nil)
     }
 }
