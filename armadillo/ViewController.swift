@@ -1,4 +1,5 @@
 import UIKit
+import UserNotifications
 
 /// This View Controller indicates list of all alarm groups
 class ViewController: UITableViewController {
@@ -77,6 +78,98 @@ class ViewController: UITableViewController {
         }
     }
     
+    //MARK: - Notifications
+    
+    func createNotifications() {
+        let center = UNUserNotificationCenter.current()
+        
+        center.removeAllPendingNotificationRequests()
+        
+        for group in groups {
+            //ignore disabled groups
+            guard group.enabled else { continue }
+            
+            for alarm in group.alarms {
+                //create a notification request from each alarm
+                let notification = createNotificationRequest(group: group, alarm: alarm)
+                //schedule the notification for delivery
+                center.add(notification) { error in
+                    if let error = error {
+                        print("Error scheduling notification: \(error)")
+                    }
+                }
+            }
+        }
+    }
+    
+    func createNotificationRequest(group: Group, alarm: Alarm) -> UNNotificationRequest {
+        //creating the content for the notification
+        let content = UNMutableNotificationContent()
+        
+        //assign the user's name and caption
+        content.title = alarm.name
+        content.body = alarm.caption
+        
+        //give it and identifier we can attach to custom buttons later on
+        content.categoryIdentifier = "alarm"
+        //attach the group ID and alarm ID for this alarm
+        content.userInfo = ["group": group.id, "alarm": alarm.id]
+        //if the user requested a sound for this group, attach their default alert sound
+        if group.playSound {
+            content.sound = UNNotificationSound.default
+        }
+        //use createNotificationAttachments to attach a picture for this alert if there's one
+        content.attachments = createNotificationAttachments(alarm: alarm)
+        //get a calendar ready to pull out date components
+        let cal = Calendar.current
+        //pull out the hour and minute components from this alarm's date
+        let dateComponents = cal.dateComponents([.hour, .minute], from: alarm.time)
+        //create a trigger matching those date components, set to repeat
+        let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: true)
+        //combine the content and the trigger to create a notification request
+        let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: trigger)
+        return request
+    }
+    
+    /// Create image attachment as a copy of exsting image
+    /// because notification attachment moves image to another location
+    ///
+    /// - Parameter alarm: source alarm
+    /// - Returns: array of attachments
+    func createNotificationAttachments(alarm: Alarm) -> [UNNotificationAttachment] {
+        //return it there is no image to attach
+        guard alarm.image.count > 0 else {return []}
+        
+        let fm = FileManager.default
+        
+        do {
+            //full path to original image
+            let imageURL = Helper.getDocumentsDirectory().appendingPathComponent(alarm.image)
+            //create temp filename
+            let copyURL = Helper.getDocumentsDirectory().appendingPathComponent("\(UUID().uuidString).jpg")
+            //copy existing image to that new filename
+            try fm.copyItem(at: imageURL, to: copyURL)
+            //create an attaichment from the temporary filename, giving it a random number
+            let attachment = try UNNotificationAttachment(identifier: UUID().uuidString, url: copyURL)
+            
+            return [attachment]
+        } catch {
+            print("Failed to attach alarm image: \(error)")
+            return []
+        }
+    }
+    
+    func updateNotifications() {
+        let center = UNUserNotificationCenter.current()
+        
+        center.requestAuthorization(options: [.alert, .sound]) {
+            [unowned self] (granted, error) in
+            if granted {
+                self.createNotifications()
+            }
+        }
+    }
+    
     //MARK: - Archiving and unarchiving routines
     
     @objc func save() {
@@ -87,6 +180,7 @@ class ViewController: UITableViewController {
         } catch {
             print("failed to save")
         }
+        updateNotifications()
     }
     
     func load() {
