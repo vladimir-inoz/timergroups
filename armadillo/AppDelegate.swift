@@ -21,10 +21,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let show = UNNotificationAction(identifier: "show", title: "Show group", options: .foreground)
         let destroy = UNNotificationAction(identifier: "destroy", title: "Destroy group", options: [.destructive, .authenticationRequired])
         let rename = UNTextInputNotificationAction(identifier: "rename", title: "Rename group", options: [], textInputButtonTitle: "Rename", textInputPlaceholder: "Type the new name here")
+        let destroyPict = UNNotificationAction(identifier: "destroy_pict", title: "Remove picture", options: [.destructive])
         //wrap actions inside a category
-        let category = UNNotificationCategory(identifier: "alarm", actions: [show, rename, destroy], intentIdentifiers: [], options: [.customDismissAction])
+        let regularCategory = UNNotificationCategory(identifier: "alarm", actions: [show, rename, destroy], intentIdentifiers: [], options: [.customDismissAction])
+        let imageCategory = UNNotificationCategory(identifier: "alarm_i", actions: [show, rename, destroy, destroyPict], intentIdentifiers: [], options: [.customDismissAction])
         //register the category with the system
-        center.setNotificationCategories([category])
+        center.setNotificationCategories([regularCategory, imageCategory])
         
         return true
     }

@@ -111,7 +111,11 @@ class ViewController: UITableViewController, UNUserNotificationCenterDelegate {
         content.body = alarm.caption
         
         //give it and identifier we can attach to custom buttons later on
-        content.categoryIdentifier = "alarm"
+        if alarm.image.isEmpty {
+            content.categoryIdentifier = "alarm"
+        } else {
+            content.categoryIdentifier = "alarm_i"
+        }
         //attach the group ID and alarm ID for this alarm
         content.userInfo = ["group": group.id, "alarm": alarm.id]
         //if the user requested a sound for this group, attach their default alert sound
@@ -226,6 +230,24 @@ class ViewController: UITableViewController, UNUserNotificationCenterDelegate {
         load()
     }
     
+    func destroyImage(group groupID: String, alarm alarmID: String) {
+        _ = navigationController?.popToRootViewController(animated: false)
+        
+        if let alarm = groups.filter({$0.id == groupID}).first?.alarms.filter({$0.id == alarmID}).first {
+            //removing image
+            let url = Helper.getDocumentsDirectory().appendingPathComponent(alarm.image)
+            do {
+                try FileManager.default.removeItem(at: url)
+            } catch {
+                print("Could not remove attached image")
+            }
+            alarm.image = ""
+        }
+        
+        save()
+        load()
+    }
+    
     func rename(group groupID: String, newName: String) {
         _ = navigationController?.popToRootViewController(animated: false)
         
@@ -254,16 +276,21 @@ class ViewController: UITableViewController, UNUserNotificationCenterDelegate {
             //the user dismissed the alert, do nothing
             case UNNotificationDismissActionIdentifier:
                 print("Dismiss identifier")
-                //user asked to see the group
+            //user asked to see the group
             case "show":
                 display(group: groupID)
-                //the user asked to destroy the group, so call `destroy()`
+            //the user asked to destroy the group, so call `destroy()`
             case "destroy":
                 destroy(group: groupID)
-                //the user asked to rename the group, so safely unwrap their text response and call `rename()`
+            //the user asked to rename the group, so safely unwrap their text response and call `rename()`
             case "rename":
                 if let textResponse = response as? UNTextInputNotificationResponse {
                     rename(group: groupID, newName: textResponse.userText)
+                }
+            //the user asked to remove image
+            case "destroy_pict":
+                if let alarmID = userInfo["alarm"] as? String {
+                    destroyImage(group: groupID, alarm: alarmID)
                 }
             default:
                 break
