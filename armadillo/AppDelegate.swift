@@ -8,7 +8,24 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        // Override point for customization after application launch.
+        let center = UNUserNotificationCenter.current()
+        
+        if let navController = window?.rootViewController as? UINavigationController {
+            if let viewController = navController.viewControllers[0] as? ViewController {
+                //if we're here then we found our active view controller
+                center.delegate = viewController
+            }
+        }
+        
+        //create actions for alert
+        let show = UNNotificationAction(identifier: "show", title: "Show group", options: .foreground)
+        let destroy = UNNotificationAction(identifier: "destroy", title: "Destroy group", options: [.destructive, .authenticationRequired])
+        let rename = UNTextInputNotificationAction(identifier: "rename", title: "Rename group", options: [], textInputButtonTitle: "Rename", textInputPlaceholder: "Type the new name here")
+        //wrap actions inside a category
+        let category = UNNotificationCategory(identifier: "alarm", actions: [show, rename, destroy], intentIdentifiers: [], options: [.customDismissAction])
+        //register the category with the system
+        center.setNotificationCategories([category])
+        
         return true
     }
 
@@ -36,4 +53,5 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 
 }
+
 

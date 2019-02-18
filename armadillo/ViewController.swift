@@ -2,7 +2,7 @@ import UIKit
 import UserNotifications
 
 /// This View Controller indicates list of all alarm groups
-class ViewController: UITableViewController {
+class ViewController: UITableViewController, UNUserNotificationCenterDelegate {
     var groups = [Group]()
     
     override func viewDidLoad() {
@@ -193,6 +193,85 @@ class ViewController: UITableViewController {
         }
         
         tableView.reloadData()
+    }
+    
+    //MARK: - Notification center delegate
+    
+    func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
+        completionHandler([.alert])
+    }
+    
+    func display(group groupID: String) {
+        _ = navigationController?.popToRootViewController(animated: false)
+        
+        for group in groups {
+            if group.id == groupID {
+                performSegue(withIdentifier: "EditGroup", sender: group)
+                return
+            }
+        }
+        
+        save()
+        load()
+    }
+    
+    func destroy(group groupID: String) {
+        _ = navigationController?.popToRootViewController(animated: false)
+        
+        for (index, group) in groups.enumerated() {
+            if group.id == groupID {
+                groups.remove(at: index)
+                break
+            }
+        }
+    }
+    
+    func rename(group groupID: String, newName: String) {
+        _ = navigationController?.popToRootViewController(animated: false)
+        
+        for group in groups {
+            if group.id == groupID {
+                group.name = newName
+                break
+            }
+        }
+        
+        save()
+        load()
+    }
+    
+    //This method is triggered when user interacts with our notification
+    func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
+        //pull out userInfo dictionary
+        let userInfo = response.notification.request.content.userInfo
+        
+        if let groupID = userInfo["group"] as? String {
+            //handling different actions
+            switch response.actionIdentifier {
+                //the user swiped to unlock, do nothing
+            case UNNotificationDefaultActionIdentifier:
+                print("Default identifier")
+            //the user dismissed the alert, do nothing
+            case UNNotificationDismissActionIdentifier:
+                print("Dismiss identifier")
+                //user asked to see the group
+            case "show":
+                display(group: groupID)
+                //the user asked to destroy the group, so call `destroy()`
+            case "destroy":
+                destroy(group: groupID)
+                //the user asked to rename the group, so safely unwrap their text response and call `rename()`
+            case "rename":
+                if let textResponse = response as? UNTextInputNotificationResponse {
+                    rename(group: groupID, newName: textResponse.userText)
+                }
+            default:
+                break
+            }
+            
+            //call the completion handler when done
+            completionHandler()
+        }
     }
 }
 
