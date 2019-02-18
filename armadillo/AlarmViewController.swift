@@ -93,6 +93,7 @@ class AlarmViewController: UITableViewController, UITextFieldDelegate, UIImagePi
     }
     
     @objc func save() {
-        NotificationCenter.default.post(name: Notification.Name("save"), object: nil)
+        let state = AlarmChangeState.modified(alarm)
+        NotificationCenter.default.post(name: Notification.Name("save"), object: state)
     }
 }

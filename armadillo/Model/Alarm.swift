@@ -1,4 +1,11 @@
 import Foundation
+
+enum AlarmChangeState {
+    case removed(String)
+    case modified(Alarm)
+    case added(Alarm)
+}
+
 class Alarm: NSObject, NSCoding {
     /// Unique ID of alarm
     var id: String

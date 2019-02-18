@@ -14,7 +14,7 @@ class ViewController: UITableViewController, UNUserNotificationCenterDelegate {
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addGroup))
         navigationItem.backBarButtonItem = UIBarButtonItem(title: "Groups", style: .plain, target: nil, action: nil)
         
-        NotificationCenter.default.addObserver(self, selector: #selector(save), name: Notification.Name("save"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(handleNotification), name: Notification.Name("save"), object: nil)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -31,8 +31,13 @@ class ViewController: UITableViewController, UNUserNotificationCenterDelegate {
     }
     
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        let ids = groups[indexPath.row].alarms.map {return $0.id}
         groups.remove(at: indexPath.row)
         tableView.deleteRows(at: [indexPath], with: .automatic)
+        //remove notifications from entire group
+        for id in ids {
+            self.createNotifications(state: .removed(id))
+        }
         save()
     }
     
@@ -80,16 +85,15 @@ class ViewController: UITableViewController, UNUserNotificationCenterDelegate {
     
     //MARK: - Notifications
     
-    func createNotifications() {
+    func createNotifications(state: AlarmChangeState) {
         let center = UNUserNotificationCenter.current()
         
-        center.removeAllPendingNotificationRequests()
-        
-        for group in groups {
-            //ignore disabled groups
-            guard group.enabled else { continue }
-            
-            for alarm in group.alarms {
+        switch state {
+        case let .added(alarm), let .modified(alarm):
+            //searching for alarm
+            let validGroups = self.groups.filter({$0.alarms.filter({$0 === alarm}).count > 0})
+            if let group = validGroups.first {
+                center.removePendingNotificationRequests(withIdentifiers: [alarm.id])
                 //create a notification request from each alarm
                 let notification = createNotificationRequest(group: group, alarm: alarm)
                 //schedule the notification for delivery
@@ -99,6 +103,8 @@ class ViewController: UITableViewController, UNUserNotificationCenterDelegate {
                     }
                 }
             }
+        case let .removed(id):
+            center.removePendingNotificationRequests(withIdentifiers: [id])
         }
     }
     
@@ -131,7 +137,7 @@ class ViewController: UITableViewController, UNUserNotificationCenterDelegate {
         //create a trigger matching those date components, set to repeat
         let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: true)
         //combine the content and the trigger to create a notification request
-        let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: trigger)
+        let request = UNNotificationRequest(identifier: alarm.id, content: content, trigger: trigger)
         return request
     }
     
@@ -163,20 +169,27 @@ class ViewController: UITableViewController, UNUserNotificationCenterDelegate {
         }
     }
     
-    func updateNotifications() {
+    func updateNotifications(state: AlarmChangeState) {
         let center = UNUserNotificationCenter.current()
         
         center.requestAuthorization(options: [.alert, .sound]) {
             [unowned self] (granted, error) in
             if granted {
-                self.createNotifications()
+                self.createNotifications(state: state)
             }
         }
     }
     
     //MARK: - Archiving and unarchiving routines
     
-    @objc func save() {
+    @objc func handleNotification(_ sender: Notification) {
+        save()
+        if let state = sender.object as? AlarmChangeState {
+            updateNotifications(state: state)
+        }
+    }
+    
+    func save() {
         do {
             let path = Helper.getDocumentsDirectory().appendingPathComponent("group.data")
             let data = try NSKeyedArchiver.archivedData(withRootObject: groups, requiringSecureCoding: false)
@@ -184,7 +197,6 @@ class ViewController: UITableViewController, UNUserNotificationCenterDelegate {
         } catch {
             print("failed to save")
         }
-        updateNotifications()
     }
     
     func load() {
