@@ -210,9 +210,6 @@ class ViewController: UITableViewController, UNUserNotificationCenterDelegate {
                 return
             }
         }
-        
-        save()
-        load()
     }
     
     func destroy(group groupID: String) {
@@ -224,6 +221,9 @@ class ViewController: UITableViewController, UNUserNotificationCenterDelegate {
                 break
             }
         }
+        
+        save()
+        load()
     }
     
     func rename(group groupID: String, newName: String) {
